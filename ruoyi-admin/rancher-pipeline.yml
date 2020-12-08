@@ -1,0 +1,43 @@
+stages:
+  - name: bulid
+    steps:
+      - runScriptConfig:
+          image: maven
+          shellScript: |-
+            LOG_TAG="CHIP-INFO"
+            MVN_SETTINGS_PATH="/root/.m2"
+            if [ -d "${MVN_SETTINGS_PATH}" ];then
+                 mv ./settings.xml ${MVN_SETTINGS_PATH}
+                 if [ $? -eq 0 ];then
+                    echo "[$LOG_TAG]Copy settings.xml to ${MVN_SETTINGS_PATH} success!"
+                 else
+                    echo "[$LOG_TAG]Copy settings.xml to ${MVN_SETTINGS_PATH} fail!"
+                 fi
+            else
+               mkdir -p ${MVN_SETTINGS_PATH} && mv ./settings.xml ${MVN_SETTINGS_PATH}
+               echo "[$LOG_TAG]Create path:${MVN_SETTINGS_PATH} and copy settings.xml to ${MVN_SETTINGS_PATH}!"
+            fi
+            echo "[$LOG_TAG]Current pwd:`pwd`"
+            ls -l
+            echo "[$LOG_TAG]===========Execute Maven CMD Build Project Start==========="
+            mvn clean package -Dmaven.test.skip=true
+            echo "[$LOG_TAG]===========Execute Maven CMD Build Project End==========="
+            echo "[$LOG_TAG]Dir:target ls -l:`pwd`"
+            ls -l ./target
+  - name: publish
+    steps:
+      - publishImageConfig:
+          dockerfilePath: ./Dockerfile
+          buildContext: .
+          tag: registry.cn-beijing.aliyuncs.com/wzgdemo/ruoyi:1.0  #TODO:zkxy-config改为配置的镜像名称
+          pushRemote: true
+          registry: registry.cn-beijing.aliyuncs.com #Docker私仓地址
+        env:
+          PLUGIN_DEBUG: "true"
+          PLUGIN_INSECURE: "true"
+  - name: deploy
+    steps:
+      - applyYamlConfig:
+          path: ./deployment.yaml
+timeout: 60
+notification: {}
