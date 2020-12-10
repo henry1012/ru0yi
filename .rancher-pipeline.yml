@@ -30,7 +30,7 @@ stages:
       - publishImageConfig:
           dockerfilePath: ./Dockerfile
           buildContext: .
-          tag:  ruoyi-admin-test/ruoyi-admin:1.0  #TODO:ig改为配置的镜像名称
+          tag:  registry.cn-beijing.aliyuncs.com/ruoyi-admin-test/ruoyi-admin:1.0  #TODO:ig改为配置的镜像名称
           pushRemote: true
           registry: registry.cn-beijing.aliyuncs.com #Docker私仓地址
   - name: deploy
