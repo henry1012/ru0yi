@@ -61,6 +61,7 @@ public class SysUserController extends BaseController
     public TableDataInfo list(SysUser user)
     {
         logger.info("来了来了。。。。。。。");
+        System.out.println("来了来了222。。。。。。。");
         startPage();
         List<SysUser> list = userService.selectUserList(user);
         return getDataTable(list);
