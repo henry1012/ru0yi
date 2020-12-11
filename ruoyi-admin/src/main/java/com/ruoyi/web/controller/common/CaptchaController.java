@@ -45,7 +45,7 @@ public class CaptchaController
     @GetMapping("/captchaImage")
     public AjaxResult getCode(HttpServletResponse response) throws IOException
     {
-        System.out.println("======来着了2222222=====");
+        System.out.println("======来着了22222222=====");
         // 保存验证码信息
         String uuid = IdUtils.simpleUUID();
         String verifyKey = Constants.CAPTCHA_CODE_KEY + uuid;
