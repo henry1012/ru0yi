@@ -60,6 +60,7 @@ public class SysUserController extends BaseController
     @GetMapping("/list")
     public TableDataInfo list(SysUser user)
     {
+        logger.info("来了来了。。。。。。。");
         startPage();
         List<SysUser> list = userService.selectUserList(user);
         return getDataTable(list);
